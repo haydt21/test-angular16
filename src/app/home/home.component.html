@@ -1,0 +1,101 @@
+<div class="container">
+    <h1 class="text-center">Hello from home component</h1>
+
+    <h3 class="text-danger text-center">Hello {{email}}</h3>
+    <div class="d-flex justify-content-center align-items-center">
+        <form class="w-25">
+            <div class="mb-3">
+                <label for="exampleInputName1" class="form-label">Name</label>
+                <input [(ngModel)]="name" [title]="'This is ' + name" type="text" class="form-control"
+                    id="exampleInputName1" aria-describedby="nameHelp" name="name">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input [(ngModel)]="email" [title]="'This is ' + email" type="email" class="form-control"
+                    id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" [(ngModel)]="password" name="password" class="form-control"
+                    id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="marks" class="form-label">Marks</label>
+                <input type="number" [(ngModel)]="marks" name="marks" class="form-control" min="0" max="15" id="marks"
+                    value="{{marks}}">
+                <!-- <div *ngIf="number > 10 || number < 0" class="form-text">Điểm không hợp lệ</div>
+                <div *ngIf="number >= 0 && number <=10" class="form-text">Điểm hợp lệ</div> -->
+
+                <div *ngIf="marks >= 0 && marks <= 10 && marks != null then accept; else ignore"></div>
+                <ng-template #ignore>
+                    <div class="form-text">Điểm không hợp lệ</div>
+                </ng-template>
+                <ng-template #accept>
+                    <div class="form-text">Điểm hợp lệ</div>
+                </ng-template>
+            </div>
+            <button type="button" class="btn btn-primary me-2" (click)="add()">Add</button>
+            <button type="button" class="btn btn-secondary" (click)="reset()">Reset</button>
+        </form>
+        <hr>
+
+    </div>
+    <h3>Danh sách sinh viên</h3>
+    <ul *ngFor="let student of students; let i = index">
+        <li>{{i + 1}} - {{student.name}}</li>
+    </ul>
+    <hr>
+
+    <div class="card">
+        <p-table [value]="students" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
+                    <th pSortableColumn="email" style="width:20%">Email <p-sortIcon field="email"></p-sortIcon></th>
+                    <th pSortableColumn="password" style="width:20%">Password <p-sortIcon field="password"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="marks" style="width:20%">Marks <p-sortIcon field="marks"></p-sortIcon></th>
+                    <th style="width:20%">Result</th>
+                </tr>
+            </ng-template>
+            <!-- <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="code" style="width:20%">Code <p-sortIcon field="code"></p-sortIcon></th>
+                    <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
+                    <th pSortableColumn="category" style="width:20%">Category <p-sortIcon field="category"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="quantity" style="width:20%">Quantity <p-sortIcon field="quantity"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="price" style="width:20%">Price <p-sortIcon field="price"></p-sortIcon></th>
+                </tr>
+            </ng-template> -->
+            <ng-template pTemplate="body" let-item>
+                <tr>
+                    <td>{{item.name}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.password}}</td>
+                    <td [ngClass]="{'text-danger' : item.marks < 5}">{{item.marks}}</td>
+                    <td [ngClass]="{'text-danger' : item.marks < 5}">{{item.marks >= 5 ? 'Đạt' : 'Không đạt'}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div class="card p-4">
+        <p-toast [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'"
+            [hideTransitionOptions]="'1000ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
+        <div class="d-flex justify-content-center gap-2">
+            <button type="button" pButton pRipple (click)="showSuccess('Show success')" label="Success"
+                class="p-button-success"></button>
+            <button type="button" pButton pRipple (click)="showInfo('Show info')" label="Info"
+                class="p-button-info"></button>
+            <button type="button" pButton pRipple (click)="showWarn('Show warning')" label="Warn"
+                class="p-button-warning"></button>
+            <button type="button" pButton pRipple (click)="showError('Show error')" label="Error"
+                class="p-button-danger"></button>
+        </div>
+
+    </div>
+</div>
