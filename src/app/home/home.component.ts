@@ -14,6 +14,21 @@ export class HomeComponent implements OnInit {
   public password: string = '';
   public fee: number = 10000;
   public currentDate: Date = new Date();
+  public countries: any[] | undefined;
+  public selectedCountry = {
+    code: 'VN',
+    name: 'Việt Nam',
+    city: ['Cần Thơ', 'Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng', 'Cà Mau'],
+  };
+  public selectedCity = { name: 'Cần Thơ' };
+  public cities = [
+    { name: 'Cần Thơ' },
+    { name: 'Hồ Chí Minh' },
+    { name: 'Hà Nội' },
+    { name: 'Đà Nẵng' },
+    { name: 'Cà Mau' },
+  ];
+
   public students = [
     {
       name: 'Thịnh',
@@ -21,6 +36,8 @@ export class HomeComponent implements OnInit {
       password: 'hay123',
       marks: 9.7,
       fee: 100000,
+      country: 'Việt Nam',
+      city: 'Cần Thơ',
     },
     {
       name: 'Hay',
@@ -28,6 +45,8 @@ export class HomeComponent implements OnInit {
       password: 'hay123',
       marks: 1.9,
       fee: 150000,
+      country: 'Việt Nam',
+      city: 'Hà Nội',
     },
     {
       name: 'Như',
@@ -35,6 +54,8 @@ export class HomeComponent implements OnInit {
       password: 'nhu123',
       marks: 9.9,
       fee: 230000,
+      country: 'China',
+      city: 'Thượng Hải',
     },
     {
       name: 'Đạt',
@@ -42,6 +63,8 @@ export class HomeComponent implements OnInit {
       password: 'dat123',
       marks: 6.9,
       fee: 100000,
+      country: 'Japan',
+      city: 'Tokyo',
     },
   ];
 
@@ -81,6 +104,30 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('students', this.students);
+
+    this.countries = [
+      {
+        code: 'VN',
+        name: 'Việt Nam',
+        city: ['Cần Thơ', 'Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng', 'Cà Mau'],
+      },
+      {
+        code: 'CN',
+        name: 'Trung Quốc',
+        city: ['Thượng Hải', 'Bắc Kinh', 'Hồng Kông', 'Thiên Tân', 'Vũ Hán'],
+      },
+      {
+        code: 'JP',
+        name: 'Nhật Bản',
+        city: ['Tokyo', 'Fukushima', 'Kyoto', 'Nagasaki', 'Hiroshima'],
+      },
+      {
+        code: 'TH',
+        name: 'Thái Lan',
+        city: ['Băng Cốc', 'Chiang Mai', 'Phuket', 'Pattaya', 'Chiang Rai'],
+      },
+    ];
+    console.log('country', this.countries);
   }
 
   public reset(): void {
@@ -96,13 +143,29 @@ export class HomeComponent implements OnInit {
         marks: this.marks,
         password: this.password,
         fee: this.fee,
+        country: this.selectedCountry.name,
+        city: this.selectedCity.name,
       };
+      console.log('new Student', newStudent);
 
       this.students.push(newStudent);
       this.reset();
       this.showSuccess('Add new success');
     } else {
       this.showError('Add new error');
+    }
+  }
+  public changeCity(event: any): void {
+    console.log('event:', event);
+    const country = event.value;
+    console.log('country get', country);
+    if (country && country.city.length > 0) {
+      this.selectedCity.name = country.city[0];
+      for (let index = 0; index < country.city.length; index++) {
+        this.cities[index].name = country.city[index];
+      }
+      this.selectedCity = this.cities[0];
+      console.log('cities', this.cities);
     }
   }
 }

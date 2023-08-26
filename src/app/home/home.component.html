@@ -3,28 +3,26 @@
 
     <h3 class="text-danger text-center">Hello {{email}}</h3>
     <div class="d-flex justify-content-center align-items-center">
-        <form class="w-25">
+        <form class="w-25" action="">
             <div class="mb-3">
                 <label for="exampleInputName1" class="form-label">Name</label>
                 <input [(ngModel)]="name" [title]="'This is ' + name" type="text" class="form-control"
-                    id="exampleInputName1" aria-describedby="nameHelp" name="name">
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    id="exampleInputName1" aria-describedby="nameHelp" name="name" required>
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
                 <input [(ngModel)]="email" [title]="'This is ' + email" type="email" class="form-control"
-                    id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input type="password" [(ngModel)]="password" name="password" class="form-control"
-                    id="exampleInputPassword1">
+                    id="exampleInputPassword1" required>
             </div>
             <div class="mb-3">
                 <label for="marks" class="form-label">Marks</label>
                 <input type="number" [(ngModel)]="marks" name="marks" class="form-control" min="0" max="15" id="marks"
-                    value="{{marks}}">
+                    value="{{marks}}" required>
                 <!-- <div *ngIf="number > 10 || number < 0" class="form-text">Điểm không hợp lệ</div>
                 <div *ngIf="number >= 0 && number <=10" class="form-text">Điểm hợp lệ</div> -->
 
@@ -37,9 +35,42 @@
                 </ng-template>
             </div>
             <div class="mb-3">
+                <label class="form-label me-4">Country </label><br>
+                <p-dropdown class="custom-dropdown" [options]="countries" [(ngModel)]="selectedCountry"
+                    optionLabel="name" [filter]="true" filterBy="name" (onChange)="changeCity($event)"
+                    [showClear]="true" placeholder="Select a Country" name="countries">
+                    <ng-template pTemplate="selectedItem">
+                        <div class="flex align-items-center gap-1" *ngIf="selectedCountry">
+                            <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                [class]="'flag flag-' + selectedCountry.code.toLowerCase()" style="width: 8px" />
+                            <div>{{ selectedCountry.name }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-country pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                [class]="'flag flag-' + country.code.toLowerCase()" style="width: 8px" />
+                            <div>{{ country.name }}</div>
+                        </div>
+                    </ng-template>
+
+
+                </p-dropdown>
+
+
+            </div>
+            <div class="mb-3">
+                <label class="form-label me-4">City </label>
+                <span class="p-float-label">
+                    <p-dropdown [options]="cities" [(ngModel)]="selectedCity" placeholder="Select a City"
+                        optionLabel="name" name="cities" inputId="float-label"></p-dropdown>
+                </span>
+            </div>
+
+            <div class="mb-3">
                 <label for="fee" class="form-label">Fee</label>
                 <input type="number" [(ngModel)]="fee" name="fee" class="form-control" min="0" max="1000000" id="fee"
-                    value="{{fee}}">
+                    value="{{fee}}" required>
                 <!-- <div *ngIf="number > 10 || number < 0" class="form-text">Điểm không hợp lệ</div>
                             <div *ngIf="number >= 0 && number <=10" class="form-text">Điểm hợp lệ</div> -->
 
@@ -51,7 +82,7 @@
                     <div class="form-text">Phí hợp lệ</div>
                 </ng-template>
             </div>
-            <button type="button" class="btn btn-primary me-2" (click)="add()">Add</button>
+            <button type="submit" class="btn btn-primary me-2" (click)="add()">Add</button>
             <button type="button" class="btn btn-secondary" (click)="reset()">Reset</button>
         </form>
         <hr>
@@ -73,6 +104,9 @@
                     <th pSortableColumn="email" style="width:10%">Email <p-sortIcon field="email"></p-sortIcon></th>
                     <th pSortableColumn="password" style="width:10%">Password <p-sortIcon field="password"></p-sortIcon>
                     </th>
+                    <th pSortableColumn="country" style="width:10%">Country <p-sortIcon field="country"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="city" style="width:10%">City<p-sortIcon field="city"></p-sortIcon></th>
                     <th pSortableColumn="fee" style="width:5%">Fee <p-sortIcon field="fee"></p-sortIcon></th>
                     <th style="width:5%">Product status</th>
                     <th pSortableColumn="marks" style="width:5%">Marks <p-sortIcon field="marks"></p-sortIcon></th>
@@ -96,6 +130,8 @@
                     <td>{{item.name | uppercase}}</td>
                     <td>{{item.email}}</td>
                     <td>{{item.password}}</td>
+                    <td>{{item.country | uppercase}}</td>
+                    <td>{{item.city | lowercase}}</td>
                     <td>{{item.fee | currency : "VND"}}</td>
                     <td [ngClass]="{'text-warning' : item.fee < 125000, 'text-info' : item.fee >= 125000}">{{item.fee |
                         sale | uppercase}}</td>
