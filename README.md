@@ -1,8 +1,10 @@
-# SpringBootAndAngular
+# Test Angular 16
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.4.
 
 ## Development server
+
+To clarify, running `npm install` is a command used in the command-line interface (CLI) to install the dependencies listed in a project's package.json file. These dependencies can include various libraries, frameworks, and tools that your project relies on.
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
