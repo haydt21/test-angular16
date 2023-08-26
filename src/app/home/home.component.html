@@ -36,6 +36,21 @@
                     <div class="form-text">Điểm hợp lệ</div>
                 </ng-template>
             </div>
+            <div class="mb-3">
+                <label for="fee" class="form-label">Fee</label>
+                <input type="number" [(ngModel)]="fee" name="fee" class="form-control" min="0" max="1000000" id="fee"
+                    value="{{fee}}">
+                <!-- <div *ngIf="number > 10 || number < 0" class="form-text">Điểm không hợp lệ</div>
+                            <div *ngIf="number >= 0 && number <=10" class="form-text">Điểm hợp lệ</div> -->
+
+                <div *ngIf="fee >= 0 && fee <= 1000000 && fee != null then acceptFee; else ignoreFee"></div>
+                <ng-template #ignoreFee>
+                    <div class="form-text">Vui lòng nhập phí từ 0 đến 1000000</div>
+                </ng-template>
+                <ng-template #acceptFee>
+                    <div class="form-text">Phí hợp lệ</div>
+                </ng-template>
+            </div>
             <button type="button" class="btn btn-primary me-2" (click)="add()">Add</button>
             <button type="button" class="btn btn-secondary" (click)="reset()">Reset</button>
         </form>
@@ -49,15 +64,20 @@
     <hr>
 
     <div class="card">
+        <h3 class="text-center text-info p-3">Danh sách sinh viên cập nhật vào lúc: {{ currentDate |
+            date:'dd/MM/yy HH:mm' }} </h3>
         <p-table [value]="students" [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template pTemplate="header">
                 <tr>
-                    <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
-                    <th pSortableColumn="email" style="width:20%">Email <p-sortIcon field="email"></p-sortIcon></th>
-                    <th pSortableColumn="password" style="width:20%">Password <p-sortIcon field="password"></p-sortIcon>
+                    <th pSortableColumn="name" style="width:10%">Name <p-sortIcon field="name"></p-sortIcon></th>
+                    <th pSortableColumn="email" style="width:10%">Email <p-sortIcon field="email"></p-sortIcon></th>
+                    <th pSortableColumn="password" style="width:10%">Password <p-sortIcon field="password"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="marks" style="width:20%">Marks <p-sortIcon field="marks"></p-sortIcon></th>
-                    <th style="width:20%">Result</th>
+                    <th pSortableColumn="fee" style="width:5%">Fee <p-sortIcon field="fee"></p-sortIcon></th>
+                    <th style="width:5%">Product status</th>
+                    <th pSortableColumn="marks" style="width:5%">Marks <p-sortIcon field="marks"></p-sortIcon></th>
+
+                    <th style="width:5%">Result</th>
                 </tr>
             </ng-template>
             <!-- <ng-template pTemplate="header">
@@ -73,11 +93,16 @@
             </ng-template> -->
             <ng-template pTemplate="body" let-item>
                 <tr>
-                    <td>{{item.name}}</td>
+                    <td>{{item.name | uppercase}}</td>
                     <td>{{item.email}}</td>
                     <td>{{item.password}}</td>
-                    <td [ngClass]="{'text-danger' : item.marks < 5}">{{item.marks}}</td>
-                    <td [ngClass]="{'text-danger' : item.marks < 5}">{{item.marks >= 5 ? 'Đạt' : 'Không đạt'}}</td>
+                    <td>{{item.fee | currency : "VND"}}</td>
+                    <td [ngClass]="{'text-warning' : item.fee < 125000, 'text-info' : item.fee >= 125000}">{{item.fee |
+                        sale | uppercase}}</td>
+                    <td [ngClass]="{'text-danger' : item.marks < 5}">{{item.marks | number}}</td>
+                    <td [ngClass]="{'text-danger' : item.marks < 5}">{{item.marks >= 5 ? 'Đạt' : 'Không đạt'
+                        |
+                        uppercase}}</td>
                 </tr>
             </ng-template>
         </p-table>
